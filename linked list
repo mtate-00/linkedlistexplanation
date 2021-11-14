@@ -1,0 +1,83 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct linkNode{
+    int value;
+    struct linkNode *nextPtr;
+}; typedef struct linkNode LinkNode;
+
+LinkNode *createNewNode(int value){
+    LinkNode *newNode = malloc(sizeof(LinkNode));
+    newNode->value = value;
+    newNode->nextPtr = NULL;
+    return newNode;
+}
+
+void insertAfterNode(LinkNode *nodeToInsertAfter, LinkNode *newNode){
+    newNode->nextPtr = nodeToInsertAfter->nextPtr;
+    nodeToInsertAfter->nextPtr = newNode;
+}
+
+void deleteNode(LinkNode *previous, LinkNode *nodeToDelete){
+    previous->nextPtr = nodeToDelete->nextPtr;
+    free(nodeToDelete);
+}
+
+void printOutNodes(LinkNode *head){
+    LinkNode *temp = head;
+    while (temp != NULL){
+        printf("%d-", temp->value);
+        temp = temp->nextPtr;
+    }
+}
+
+int main() {
+
+
+    //create first item (head), an empty node
+    LinkNode *head = NULL;
+    LinkNode *tail = NULL;
+    //create some nodes
+    LinkNode *node1 = malloc(sizeof(LinkNode));
+    node1->value = 1;
+    node1->nextPtr = tail;
+    head = node1;
+
+    LinkNode *node2 = malloc(sizeof(LinkNode));
+    node2->value = 2;
+    node2->nextPtr = node1;
+    head = node2;
+
+    LinkNode *node3 = malloc(sizeof(LinkNode));
+    node3->value = 3;
+    node3->nextPtr = node2;
+    head = node3;
+
+    //add/insert new node
+    LinkNode *newnode = malloc(sizeof(LinkNode));
+    newnode->value = 15;
+    newnode->nextPtr = node3->nextPtr;
+    node3->nextPtr = newnode;
+
+    //delete
+    node3->nextPtr = node2;
+    free(newnode);
+
+    //print out nodes
+    LinkNode *temp = head;
+/*
+    while (temp != NULL) {
+        printf("%d-", temp->value);
+        temp = temp->nextPtr;
+    }
+    printf("\n");
+*/
+    LinkNode *newNode2 = createNewNode(25);
+    insertAfterNode(node3, newNode2);
+
+    insertAfterNode(node2, createNewNode(50));
+    printOutNodes(head);
+
+
+    return 0;
+}
